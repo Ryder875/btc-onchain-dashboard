@@ -52,10 +52,10 @@ def calculate_metrics(df_chain, df_miners):
     # NUPL = 1 - 1/MVRV  (等价于 (MarketCap - RealizedCap) / MarketCap)
     df_chain["nupl"] = 1 - 1 / df_chain["mvrv_ratio"]
 
-    # MVRV Z-Score = (MarketCap - RealizedCap) / ExpandingStd(MarketCap - RealizedCap)
+    # MVRV Z-Score = (MarketCap - RealizedCap) / ExpandingStd(MarketCap)
     df_chain["mvrv_diff"] = df_chain["market_cap"] - df_chain["realized_cap"]
     df_chain["mvrv_z_score"] = (
-        df_chain["mvrv_diff"] / df_chain["mvrv_diff"].expanding().std()
+        df_chain["mvrv_diff"] / df_chain["market_cap"].expanding().std()
     )
 
     # Puell Multiple = DailyRevenue / 365-day MA(DailyRevenue)
